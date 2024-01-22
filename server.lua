@@ -4,15 +4,18 @@ Citizen.CreateThread(function()
         local allVehiclesInGame = GetAllVehicles()
         for _, currentVehicle in ipairs(allVehiclesInGame) do
             Citizen.CreateThread(function()
-                local currentStateOfVehicle = Entity(currentVehicle).state
+                -- Check if the vehicle entity is valid
+                if DoesEntityExist(currentVehicle) then
+                    local currentStateOfVehicle = Entity(currentVehicle).state
 
-                -- Check and update the engine damaged time
-                if currentStateOfVehicle.engineDamagedTime ~= nil then
-                    if currentStateOfVehicle.engineDamagedTime > 0 then
-                        currentStateOfVehicle.engineDamagedTime = currentStateOfVehicle.engineDamagedTime - 1
+                    -- Check and update the engine damaged time
+                    if currentStateOfVehicle.engineDamagedTime ~= nil then
+                        if currentStateOfVehicle.engineDamagedTime > 0 then
+                            currentStateOfVehicle.engineDamagedTime = currentStateOfVehicle.engineDamagedTime - 1
+                        end
+                    else
+                        currentStateOfVehicle.engineDamagedTime = 0
                     end
-                else
-                    currentStateOfVehicle.engineDamagedTime = 0
                 end
             end)
         end
